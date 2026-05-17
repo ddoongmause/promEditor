@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head('템플릿 목록')}"></head>
+<body>
+
+<header th:replace="~{fragments/header :: header}"></header>
+
+<main class="container">
+    <div class="page-header">
+        <h1 class="page-title">템플릿 목록</h1>
+        <div style="display:flex;gap:8px;align-items:center;">
+            <label for="import-file" class="btn btn-secondary" style="cursor:pointer;margin:0;">가져오기</label>
+            <input type="file" id="import-file" accept=".json" style="display:none;" onchange="importTemplate(this)">
+            <a th:href="@{/templates/new}" class="btn btn-primary">새 템플릿 만들기</a>
+        </div>
+    </div>
+
+    <!-- 검색바 -->
+    <div class="search-bar">
+        <input type="text" id="search-input" class="form-control" placeholder="제목 또는 태그로 검색"
+               oninput="onSearchInput()">
+        <select id="category-select" class="form-control" onchange="loadTemplates()" style="width:160px;">
+            <option value="">전체 카테고리</option>
+        </select>
+    </div>
+
+    <!-- 탭 -->
+    <div class="tab-bar">
+        <button class="tab-btn active" data-tab="all" onclick="switchTab('all')">전체</button>
+        <button class="tab-btn" data-tab="favorites" onclick="switchTab('favorites')">즐겨찾기 ★</button>
+    </div>
+
+    <!-- 목록 -->
+    <div id="template-list" class="card-grid">
+        <div class="empty-state"><p>불러오는 중...</p></div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+
+<script th:src="@{/js/template-list.js}"></script>
+</body>
+</html>

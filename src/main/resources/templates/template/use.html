@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head('프롬프트 사용')}"></head>
+<body>
+
+<header th:replace="~{fragments/header :: header}"></header>
+
+<main class="container">
+    <div class="page-header">
+        <div>
+            <h1 class="page-title" id="template-title">불러오는 중...</h1>
+            <p class="text-muted" id="template-description"></p>
+        </div>
+        <div style="display:flex;gap:8px;">
+            <button id="btn-copy" class="btn btn-primary">복사</button>
+            <a id="btn-edit" href="#" class="btn btn-secondary">편집</a>
+            <a th:href="@{/templates}" class="btn btn-secondary">목록으로</a>
+        </div>
+    </div>
+
+    <div class="use-layout">
+        <!-- 슬롯 입력 폼 -->
+        <div class="slot-form-section card">
+            <h2 class="editor-title">슬롯 입력</h2>
+            <div id="slot-form">
+                <div class="empty-state">불러오는 중...</div>
+            </div>
+        </div>
+
+        <!-- 미리보기 -->
+        <div class="preview-section card">
+            <div class="preview-header">
+                <h2 class="editor-title">미리보기</h2>
+            </div>
+            <pre id="preview" class="preview-box">슬롯을 채우면 여기에 결과가 표시됩니다.</pre>
+        </div>
+    </div>
+
+    <!-- 복사 완료 토스트 -->
+    <div id="toast" class="toast" style="display:none;">복사 완료!</div>
+</main>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+
+<script th:src="@{/js/template-use.js}"></script>
+</body>
+</html>

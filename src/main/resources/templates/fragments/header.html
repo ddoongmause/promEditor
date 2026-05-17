@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title} + ' | Promeditor'">Promeditor</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+<header th:fragment="header">
+    <nav class="navbar">
+        <a class="navbar-brand" th:href="@{/}">Promeditor</a>
+        <div class="navbar-menu">
+            <a th:href="@{/templates}">템플릿 목록</a>
+            <a th:href="@{/templates/new}">새 템플릿</a>
+        </div>
+    </nav>
+</header>
+</body>
+</html>

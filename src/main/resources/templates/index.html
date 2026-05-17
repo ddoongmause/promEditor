@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head('홈')}"></head>
+<body>
+
+<header th:replace="~{fragments/header :: header}"></header>
+
+<main class="container">
+    <section class="hero">
+        <h1>Promeditor</h1>
+        <p>AI 프롬프트를 템플릿으로 만들고, 슬롯만 채워서 바로 복사하세요.</p>
+        <a th:href="@{/templates}" class="btn btn-primary">템플릿 목록 보기</a>
+        <a th:href="@{/templates/new}" class="btn btn-secondary">새 템플릿 만들기</a>
+    </section>
+</main>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+
+</body>
+</html>
