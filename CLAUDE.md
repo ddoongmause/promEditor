@@ -62,5 +62,12 @@ src/test/java/com/ddoongddak/promeditor/
 - DB 마이그레이션은 **Flyway**를 사용한다 (`src/main/resources/db/migration/V{버전}__{설명}.sql`)
 - DDL도 동일하게 대문자로 작성한다 (PostgreSQL 문법 사용)
 
+## 네이밍 규칙
+- 변수명은 **그 값이 무엇을 나타내는지 직관적으로 이해 가능**해야 한다
+- 짧은 이름보다 명확한 이름을 우선한다 (예: `body` → `jsonResponse`)
+- JavaScript: API 응답 변수는 `jsonResponse`, `responseBody` 등 명확한 이름 사용
+- Java: 기존 규칙 유지 (camelCase, Facade 접미사 등)
+- DB: UPPER_SNAKE_CASE (기존 DB 규칙 참조)
+
 ## 상세 규칙
 자세한 내용은 `docs/coding-rules.md` 참고
