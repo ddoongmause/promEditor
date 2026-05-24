@@ -101,7 +101,7 @@ function renderList(templates) {
         // 헤더 (제목 + 즐겨찾기)
         html += '  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">';
         html += '    <div class="card-title">' + escapeHtml(t.title) + '</div>';
-        html += '    <button class="fav-btn" data-id="' + t.id + '" onclick="toggleFavorite(this,' + t.id + ')"'
+        html += '    <button class="fav-btn' + (t.isFavorite ? '' : ' inactive') + '" data-id="' + t.id + '" onclick="toggleFavorite(this,' + t.id + ')"'
                     + ' title="즐겨찾기 토글">'
                     + (t.isFavorite ? '★' : '☆') + '</button>';
         html += '  </div>';
@@ -139,9 +139,10 @@ function renderList(templates) {
 function toggleFavorite(btn, id) {
     fetch('/api/templates/' + id + '/favorite', { method: 'POST' })
         .then(function (res) { return res.json(); })
-        .then(function (body) {
-            if (!body.success) return;
-            btn.textContent = body.data.isFavorite ? '★' : '☆';
+        .then(function (jsonResponse) {
+            if (!jsonResponse.success) return;
+            btn.textContent = jsonResponse.data.isFavorite ? '★' : '☆';
+            btn.classList.toggle('inactive', !jsonResponse.data.isFavorite);
             if (currentTab === 'favorites') loadTemplates();
         });
 }

@@ -268,6 +268,18 @@ footer {
     user-select: none;
 }
 
+/* 드래그 앤 드롭 스타일 */
+.block-item.dragging {
+    opacity: 0.4;
+    border-style: dashed;
+}
+
+.block-item.block-over {
+    border-color: #4f46e5;
+    background: #f0f0ff;
+    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+}
+
 .block-body {
     flex: 1;
 }
@@ -449,6 +461,8 @@ footer {
 }
 
 .fav-btn:hover { transform: scale(1.2); }
+
+.fav-btn.inactive { color: #f59e0b; }
 
 /* ── 히스토리 ── */
 .history-section {

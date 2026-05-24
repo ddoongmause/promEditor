@@ -67,6 +67,7 @@ function addFixedBlock(content) {
     if (empty) blockList.removeChild(empty);
 
     blockList.appendChild(node);
+    makeBlockDraggable(blockList.lastElementChild);
     updatePreview();
 }
 
@@ -95,6 +96,7 @@ function addSlotBlock(name, slotType, options) {
         }
     }
     selectEl.addEventListener('change', function () { onSlotTypeChange(this); });
+    makeBlockDraggable(addedBlock);
     updatePreview();
 }
 
@@ -107,6 +109,75 @@ function removeBlock(btn) {
         blockList.innerHTML = '<div class="empty-state"><p>블록을 추가해보세요.</p></div>';
     }
     updatePreview();
+}
+
+// ── 드래그 앤 드롭 ────────────────────────────────
+
+function makeBlockDraggable(block) {
+    block.setAttribute('draggable', 'true');
+    var handle = block.querySelector('.block-handle');
+    handle.style.cursor = 'grab';
+
+    block.addEventListener('dragstart', function (e) {
+        e.dataTransfer.effectAllowed = 'move';
+        block.classList.add('dragging');
+        e.dataTransfer.setData('text/plain', '');
+        handle.style.opacity = '0.4';
+    });
+
+    block.addEventListener('dragend', function () {
+        block.classList.remove('dragging');
+        handle.style.opacity = '';
+        document.querySelectorAll('.block-over').forEach(function (el) {
+            el.classList.remove('block-over');
+        });
+        updatePreview();
+    });
+
+    block.addEventListener('dragover', function (e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        if (!block.classList.contains('dragging')) {
+            block.classList.add('block-over');
+        }
+    });
+
+    block.addEventListener('dragleave', function () {
+        block.classList.remove('block-over');
+    });
+
+    block.addEventListener('drop', function (e) {
+        e.preventDefault();
+        block.classList.remove('block-over');
+        var dragging = document.querySelector('.dragging');
+        if (!dragging || dragging === block) return;
+
+        var blockList = document.getElementById('block-list');
+        var allBlocks = Array.from(blockList.querySelectorAll('.block-item:not(.dragging)'));
+        var draggedBlock = dragging;
+
+        var insertIndex = -1;
+        for (var i = 0; i < allBlocks.length; i++) {
+            if (allBlocks[i] === block) {
+                insertIndex = i;
+                break;
+            }
+        }
+        if (insertIndex >= 0) {
+            blockList.insertBefore(draggedBlock, allBlocks[insertIndex]);
+        } else {
+            blockList.appendChild(draggedBlock);
+        }
+        updatePreview();
+    });
+}
+
+function initDragAndDrop() {
+    var blockList = document.getElementById('block-list');
+    var blocks = blockList.querySelectorAll('.block-item');
+    for (var i = 0; i < blocks.length; i++) {
+        makeBlockDraggable(blocks[i]);
+    }
 }
 
 // ── 슬롯 타입 변경 ────────────────────────────────

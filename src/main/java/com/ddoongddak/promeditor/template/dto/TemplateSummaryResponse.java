@@ -1,6 +1,7 @@
 package com.ddoongddak.promeditor.template.dto;
 
 import com.ddoongddak.promeditor.template.entity.Template;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -13,6 +14,7 @@ public class TemplateSummaryResponse {
     private final String title;
     private final String description;
     private final String category;
+    @JsonProperty("isFavorite")
     private final boolean isFavorite;
     private final List<String> tags;
     private final LocalDateTime updatedAt;
