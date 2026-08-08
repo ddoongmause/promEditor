@@ -1,0 +1,23 @@
+spring:
+  # The production container must never try to start the development compose file.
+  docker:
+    compose:
+      enabled: false
+
+  datasource:
+    url: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+
+  jpa:
+    show-sql: false
+
+logging:
+  level:
+    root: INFO
+    com.ddoongddak.promeditor: INFO
+    org.hibernate.SQL: WARN
+    org.hibernate.orm.jdbc.bind: WARN
+
+server:
+  forward-headers-strategy: framework

@@ -1,0 +1,8 @@
+# APP_DOMAIN=:80 serves plain HTTP on the server's IP address.
+# Change it to a real domain (for example, APP_DOMAIN=promeditor.example.com)
+# after the domain's A record points to this server. Caddy will then obtain
+# and renew the HTTPS certificate automatically.
+{$APP_DOMAIN} {
+    encode zstd gzip
+    reverse_proxy app:8080
+}

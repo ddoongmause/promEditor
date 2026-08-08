@@ -1,0 +1,2 @@
+# Run daily at 03:10 server time. Redirect output to a persistent log file.
+10 3 * * * /srv/apps/promeditor/scripts/backup-db.sh >> /srv/apps/promeditor/logs/backup.log 2>&1
