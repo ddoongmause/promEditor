@@ -1,8 +1,6 @@
 name: Deploy to Oracle A1
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -83,5 +81,17 @@ jobs:
 
           docker compose --project-directory "$app_dir" --env-file "$app_dir/config/.env" -f "$app_dir/compose.yaml" up -d --build --remove-orphans
           rm -rf "$release_dir"
-          curl --fail --silent --show-error http://127.0.0.1:8080/ > /dev/null
+
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:8080/ > /dev/null; then
+              echo "Application is ready."
+              exit 0
+            fi
+            echo "Waiting for application startup (${attempt}/30)..."
+            sleep 2
+          done
+
+          echo "Application did not become ready within 60 seconds."
+          docker compose --project-directory "$app_dir" --env-file "$app_dir/config/.env" -f "$app_dir/compose.yaml" logs --tail=100 app
+          exit 1
           REMOTE_SCRIPT
