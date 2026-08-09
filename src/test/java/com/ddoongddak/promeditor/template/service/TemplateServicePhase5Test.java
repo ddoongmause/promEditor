@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageRequest;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,7 @@ class TemplateServicePhase5Test {
     @Mock private SlotOptionRepository slotOptionRepository;
     @Mock private TemplateTagRepository templateTagRepository;
     @Mock private TemplateHistoryRepository templateHistoryRepository;
+    @Mock private ObjectMapper objectMapper;
 
     @InjectMocks
     private TemplateService templateService;
@@ -61,8 +63,7 @@ class TemplateServicePhase5Test {
         // given
         Template template = Template.builder().title("템플릿").build();
         given(templateRepository.findById(1L)).willReturn(Optional.of(template));
-        given(templateHistoryRepository.save(any())).willReturn(
-                TemplateHistory.builder().template(template).slotValues("{}").build());
+        given(objectMapper.writeValueAsString(any())).willReturn("{\"언어\":\"한국어\"}");
 
         HistorySaveRequest request = new HistorySaveRequest();
         setField(request, "slotValues", Map.of("언어", "한국어"));

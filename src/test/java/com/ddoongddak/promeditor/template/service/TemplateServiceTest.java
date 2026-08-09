@@ -99,10 +99,13 @@ class TemplateServiceTest {
         TemplateCreateRequest request = new TemplateCreateRequest();
         setField(request, "title", "새 템플릿");
         setField(request, "description", "설명");
+        setField(request, "category", "카테고리");
         setField(request, "blocks", List.of());
 
-        Template saved = Template.builder().title("새 템플릿").description("설명").build();
+        Template saved = Template.builder().title("새 템플릿").description("설명").category("카테고리").build();
+        setField(saved, "id", 1L);
         given(templateRepository.save(any())).willReturn(saved);
+        given(templateRepository.findById(1L)).willReturn(Optional.of(saved));
 
         // when
         TemplateResponse result = templateService.createTemplateFacade(request);
@@ -129,11 +132,13 @@ class TemplateServiceTest {
         setField(request, "blocks", List.of(blockRequest));
 
         Template savedTemplate = Template.builder().title("슬롯 템플릿").build();
+        setField(savedTemplate, "id", 1L);
         TemplateBlock savedBlock = TemplateBlock.builder()
                 .template(savedTemplate).blockType(BlockType.SLOT)
                 .content("언어").slotType(SlotType.SELECT).sortOrder(0).build();
 
         given(templateRepository.save(any())).willReturn(savedTemplate);
+        given(templateRepository.findById(1L)).willReturn(Optional.of(savedTemplate));
         given(templateBlockRepository.save(any())).willReturn(savedBlock);
         given(slotOptionRepository.save(any())).willReturn(
                 SlotOption.builder().block(savedBlock).label("한국어").sortOrder(0).build());

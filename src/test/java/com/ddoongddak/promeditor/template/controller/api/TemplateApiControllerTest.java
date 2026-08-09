@@ -1,5 +1,6 @@
 package com.ddoongddak.promeditor.template.controller.api;
 
+import com.ddoongddak.promeditor.template.dto.TemplateResponse;
 import com.ddoongddak.promeditor.template.dto.TemplateSummaryResponse;
 import com.ddoongddak.promeditor.template.service.TemplateService;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -58,9 +60,14 @@ class TemplateApiControllerTest {
                     "blocks": []
                 }
                 """;
+        TemplateResponse response = mock(TemplateResponse.class);
+        given(response.getId()).willReturn(1L);
+        given(templateService.createTemplateFacade(any()))
+                .willReturn(response);
 
         // when & then
         mockMvc.perform(post("/api/templates")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
                 .andExpect(status().isCreated());
@@ -80,6 +87,7 @@ class TemplateApiControllerTest {
 
         // when & then
         mockMvc.perform(post("/api/templates")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
                 .andExpect(status().isBadRequest());
@@ -88,7 +96,8 @@ class TemplateApiControllerTest {
     @Test
     void deleteTemplate_존재하는ID_204반환() throws Exception {
         // when & then
-        mockMvc.perform(delete("/api/templates/1"))
+        mockMvc.perform(delete("/api/templates/1")
+                        .with(csrf()))
                 .andExpect(status().isNoContent());
 
         verify(templateService).deleteTemplateFacade(1L);
@@ -101,7 +110,8 @@ class TemplateApiControllerTest {
                 .given(templateService).deleteTemplateFacade(eq(999L));
 
         // when & then
-        mockMvc.perform(delete("/api/templates/999"))
+        mockMvc.perform(delete("/api/templates/999")
+                        .with(csrf()))
                 .andExpect(status().isNotFound());
     }
 }

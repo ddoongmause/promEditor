@@ -21,7 +21,4 @@ public interface TemplateRepository extends JpaRepository<Template, Long>, JpaSp
                           @Param("category") String category);
 
 
-    List<Template> searchTemplatesByKeywordAndCategory(Specification<Template> specification);
-
-
 }

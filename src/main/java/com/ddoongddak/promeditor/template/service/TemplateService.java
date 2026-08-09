@@ -5,6 +5,7 @@ import com.ddoongddak.promeditor.template.entity.*;
 import com.ddoongddak.promeditor.template.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -200,7 +201,8 @@ public class TemplateService {
 
         String kw = (keyword != null && keyword.isBlank()) ? null : keyword;
         String cat = (category != null && category.isBlank()) ? null : category;
-        List<Template> templates = templateRepository.search(kw, cat);
+
+        List<Template> templates  = templateRepository.search(kw, cat);
 
         log.info("searchTemplates 종료 - count: {}", templates.size());
         return templates;
