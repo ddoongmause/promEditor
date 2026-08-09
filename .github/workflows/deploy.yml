@@ -72,15 +72,16 @@ jobs:
           release_dir="$1"
           app_dir=/srv/apps/promeditor
 
-          install -d -m 755 "$app_dir" "$app_dir/scripts" "$app_dir/logs" "$app_dir/data/caddy/data" "$app_dir/data/caddy/config"
+          install -d -m 755 "$app_dir" "$app_dir/scripts" "$app_dir/logs"
           install -m 644 "$release_dir/compose.yaml" "$app_dir/compose.yaml"
-          install -m 644 "$release_dir/Caddyfile" "$app_dir/Caddyfile"
           install -m 644 "$release_dir/Dockerfile" "$app_dir/Dockerfile"
           install -m 644 "$release_dir/app.jar" "$app_dir/app.jar"
           install -m 750 "$release_dir/scripts/backup-db.sh" "$app_dir/scripts/backup-db.sh"
           install -m 644 "$release_dir/scripts/promeditor-backup.cron" "$app_dir/scripts/promeditor-backup.cron"
+          install -d -m 755 "$app_dir/nginx"
+          install -m 644 "$release_dir/nginx/promeditor.conf" "$app_dir/nginx/promeditor.conf"
 
           docker compose --project-directory "$app_dir" --env-file "$app_dir/config/.env" -f "$app_dir/compose.yaml" up -d --build --remove-orphans
           rm -rf "$release_dir"
-          curl --fail --silent --show-error http://127.0.0.1/ > /dev/null
+          curl --fail --silent --show-error http://127.0.0.1:8080/ > /dev/null
           REMOTE_SCRIPT

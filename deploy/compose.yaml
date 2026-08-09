@@ -33,28 +33,8 @@ services:
         condition: service_healthy
     volumes:
       - ./uploads:/app/uploads
-    expose:
-      - "8080"
-    logging:
-      driver: local
-      options:
-        max-size: 10m
-        max-file: "3"
-
-  caddy:
-    image: caddy:2-alpine
-    restart: unless-stopped
-    env_file:
-      - ./config/.env
-    depends_on:
-      - app
     ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile:ro
-      - ./data/caddy/data:/data
-      - ./data/caddy/config:/config
+      - "127.0.0.1:8080:8080"
     logging:
       driver: local
       options:
